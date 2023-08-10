@@ -1,0 +1,16 @@
+version: '3.1'
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:14
+    restart: on-failure
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: tapusd
+      POSTGRES_PASSWORD: 4321
+      TZ: Asia/Dhaka
+    volumes:
+      - /home/tapusd/storage/docker/postgress-data:/var/lib/postgresql/data
+
