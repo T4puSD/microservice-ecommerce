@@ -1,5 +1,6 @@
 package com.tapusd.customerservice.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,7 +16,7 @@ import java.util.UUID;
 
 
 @Entity
-@Table(name = "order")
+@Table(name = "\"order\"")
 public class Order {
 
     @Id
@@ -38,7 +39,7 @@ public class Order {
     @NotNull
     private Double total;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
     private List<OrderProduct> orderProducts;
 
     public Long getId() {
