@@ -48,7 +48,30 @@ public class OrderServiceImpl implements OrderService {
                 .setOrderNo(UUID.randomUUID());
 
 
-        List<OrderProduct> orderProducts = dto.orderProductCreateDTOList().stream()
+        List<OrderProduct> orderProducts = getOrderProducts(dto, order);
+        order.setTotal(getOrderTotal(orderProducts));
+        order.setOrderProducts(orderProducts);
+        return orderRepository.save(order);
+    }
+
+    @Override
+    public List<Order> findAll() {
+        return orderRepository.findAll();
+    }
+
+    @Override
+    public Optional<Order> findById(Long id) {
+        return orderRepository.findById(id);
+    }
+
+    private Double getOrderTotal(List<OrderProduct> orderProducts) {
+        return orderProducts.parallelStream()
+                .mapToDouble(OrderProduct::getPrice)
+                .sum();
+    }
+
+    private List<OrderProduct> getOrderProducts(CreateOrderDTO dto, Order order) {
+        return dto.orderProductCreateDTOList().stream()
                 .map(orderProductCreateDTO -> {
                     var productDTO = productFeignClient.getProduct(orderProductCreateDTO.productId());
 
@@ -62,18 +85,5 @@ public class OrderServiceImpl implements OrderService {
                             .setPrice(productDTO.price())
                             .setQuantity(orderProductCreateDTO.quantity());
                 }).toList();
-
-        order.setOrderProducts(orderProducts);
-        return orderRepository.save(order);
-    }
-
-    @Override
-    public List<Order> findAll() {
-        return orderRepository.findAll();
-    }
-
-    @Override
-    public Optional<Order> findById(Long id) {
-        return orderRepository.findById(id);
     }
 }
