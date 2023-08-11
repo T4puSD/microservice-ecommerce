@@ -1,7 +1,7 @@
 package com.tapusd.customerservice.feingclients;
 
 
-import com.tapusd.customerservice.dto.response.ProductDTO;
+import com.tapusd.customerservice.dto.ProductDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
