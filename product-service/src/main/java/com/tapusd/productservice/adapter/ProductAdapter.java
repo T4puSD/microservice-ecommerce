@@ -11,6 +11,7 @@ public class ProductAdapter {
 
     public static ProductDTO convertToDTO(Product product) {
         return new ProductDTO(product.getId(),
-                product.getName());
+                product.getName(),
+                product.getPrice());
     }
 }
