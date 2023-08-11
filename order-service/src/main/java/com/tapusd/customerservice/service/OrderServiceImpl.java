@@ -66,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
 
     private Double getOrderTotal(List<OrderProduct> orderProducts) {
         return orderProducts.parallelStream()
-                .mapToDouble(OrderProduct::getPrice)
+                .mapToDouble(orderProduct -> orderProduct.getPrice() * orderProduct.getQuantity())
                 .sum();
     }
 
