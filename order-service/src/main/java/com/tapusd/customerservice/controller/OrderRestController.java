@@ -1,11 +1,11 @@
 package com.tapusd.customerservice.controller;
 
-import com.tapusd.customerservice.adapter.ProductAdapter;
+import com.tapusd.customerservice.adapter.OrderAdapter;
 import com.tapusd.customerservice.domain.Order;
 import com.tapusd.customerservice.dto.request.CreateOrderDTO;
-import com.tapusd.customerservice.dto.response.ProductDTO;
+import com.tapusd.customerservice.dto.response.OrderDTO;
 import com.tapusd.customerservice.exception.NotFoundException;
-import com.tapusd.customerservice.repository.OrderRepository;
+import com.tapusd.customerservice.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,34 +21,30 @@ import java.util.List;
 @RequestMapping("api/v1/orders")
 public class OrderRestController {
 
-    private final OrderRepository orderRepository;
+    private final OrderService orderService;
 
-    public OrderRestController(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
+    public OrderRestController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @GetMapping
-    public List<ProductDTO> getCustomers() {
-        return orderRepository.findAll().stream()
-                .map(ProductAdapter::convertToDTO)
+    public List<OrderDTO> getOrders() {
+        return orderService.findAll().stream()
+                .map(OrderAdapter::convertToDTO)
                 .toList();
     }
 
     @GetMapping("/{id}")
-    public ProductDTO getCustomer(@PathVariable Long id) {
-        return orderRepository.findById(id)
-                .map(ProductAdapter::convertToDTO)
+    public OrderDTO getOrder(@PathVariable Long id) {
+        return orderService.findById(id)
+                .map(OrderAdapter::convertToDTO)
                 .orElseThrow(NotFoundException::new);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductDTO saveCustomer(@RequestBody CreateOrderDTO dto) {
-
-        var order = new Order();
-//        order.setName(dto.name());
-
-        Order savedOrder = orderRepository.save(order);
-        return ProductAdapter.convertToDTO(savedOrder);
+    public OrderDTO saveOrder(@RequestBody CreateOrderDTO dto) {
+        Order savedOrder = orderService.createOrder(dto);
+        return OrderAdapter.convertToDTO(savedOrder);
     }
 }

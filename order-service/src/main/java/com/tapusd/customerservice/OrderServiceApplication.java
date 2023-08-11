@@ -1,6 +1,6 @@
 package com.tapusd.customerservice;
 
-import com.tapusd.customerservice.dto.response.ProductDTO;
+import com.tapusd.customerservice.dto.ProductDTO;
 import com.tapusd.customerservice.feingclients.ProductFeignClient;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
