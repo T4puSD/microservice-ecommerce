@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 
 @Entity
@@ -18,6 +19,9 @@ public class Product {
 
     @NotBlank
     private String name;
+
+    @NotNull
+    private Double price;
 
     public Long getId() {
         return id;
@@ -35,6 +39,15 @@ public class Product {
         this.name = name;
     }
 
+    public Double getPrice() {
+        return price;
+    }
+
+    public Product setPrice(Double price) {
+        this.price = price;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -43,13 +56,13 @@ public class Product {
         Product product = (Product) o;
 
         if (!getId().equals(product.getId())) return false;
-        return getName().equals(product.getName());
+        return getPrice().equals(product.getPrice());
     }
 
     @Override
     public int hashCode() {
         int result = getId().hashCode();
-        result = 31 * result + getName().hashCode();
+        result = 31 * result + getPrice().hashCode();
         return result;
     }
 }

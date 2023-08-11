@@ -45,10 +45,11 @@ public class ProductRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDTO saveProduct(@RequestBody CreateProductDTO dto) {
 
-        var customer = new Product();
-        customer.setName(dto.name());
+        var product = new Product();
+        product.setName(dto.name());
+        product.setPrice(dto.price());
 
-        Product savedProduct = productRepository.save(customer);
+        Product savedProduct = productRepository.save(product);
         return ProductAdapter.convertToDTO(savedProduct);
     }
 }
