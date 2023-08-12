@@ -14,7 +14,12 @@ public class OrderAdapter {
     }
 
     public static OrderDTO convertToDTO(Order order) {
-        return new OrderDTO(order.getId(), order.getCustomerName(), order.getCustomerEmail(), order.getTotal(), convertToDTOList(order.getOrderProducts()));
+        return new OrderDTO(order.getId(),
+                order.getOrderNo(),
+                order.getCustomerName(),
+                order.getCustomerEmail(),
+                order.getTotal(),
+                convertToDTOList(order.getOrderProducts()));
     }
 
     private static List<OrderProductDTO> convertToDTOList(List<OrderProduct> orderProducts) {
