@@ -14,11 +14,11 @@ public class GatewayConfig {
                 .route("productService",
                         r -> r.path("/ps/**")
                                 .filters(f -> f.rewritePath("^/ps", ""))
-                                .uri("lb://PRODUCTSERVICE")
+                                .uri("lb://PRODUCTSERVICE") // using `lb` prefix to indicate gateway to use the eureka
                 ).route("customerService",
                         r -> r.path("/cs/**")
                                 .filters(f -> f.rewritePath("^/cs", ""))
-                                .uri("lb://CUSTOMERSERVICE")
+                                .uri("lb://CUSTOMERSERVICE") // using registered eureka clients name to route traffic with load balancer
                 ).route("orderService",
                         r -> r.path("/os/**")
                                 .filters(f -> f.rewritePath("^/os", ""))
