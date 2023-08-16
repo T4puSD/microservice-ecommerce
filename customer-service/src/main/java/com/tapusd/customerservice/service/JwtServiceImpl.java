@@ -33,10 +33,10 @@ public class JwtServiceImpl implements JwtService {
         Map<String, String> claims = Map.of("roles", "[ROLE_ADMIN, ROLE_USER, ROLE_SEO]");
 
         return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(customer.getId().toString())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + 3600))
-                .setClaims(claims)
                 .setIssuer(ISSUER)
                 .signWith(SECRET_SIGNING_KEY)
                 .compact();
