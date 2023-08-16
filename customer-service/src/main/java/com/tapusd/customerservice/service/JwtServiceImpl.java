@@ -36,7 +36,7 @@ public class JwtServiceImpl implements JwtService {
                 .setClaims(claims)
                 .setSubject(customer.getId().toString())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + 3600))
+                .setExpiration(new Date(new Date().getTime() + 3600 * 1000)) // 1 hour
                 .setIssuer(ISSUER)
                 .signWith(SECRET_SIGNING_KEY)
                 .compact();
