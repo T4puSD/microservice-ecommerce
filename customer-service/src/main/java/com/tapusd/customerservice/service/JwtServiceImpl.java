@@ -30,7 +30,10 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public String createToken(Customer customer) {
 
-        Map<String, String> claims = Map.of("roles", "[ROLE_ADMIN, ROLE_USER, ROLE_SEO]");
+        Map<String, String> claims = Map.of(
+                "email", customer.getEmail(),
+                "roles", "[ROLE_ADMIN, ROLE_USER, ROLE_SEO]"
+        );
 
         return Jwts.builder()
                 .setClaims(claims)
