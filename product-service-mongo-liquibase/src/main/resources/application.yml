@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: product-service
+  data:
+    mongodb:
+      auto-index-creation: false
+      uri: mongodb://localhost:37017/ecommerce-microservice
+      username: tapusd
+      password: 4321
+
+
+  liquibase:
+    change-log: classpath:db/changelog/changelog.yml

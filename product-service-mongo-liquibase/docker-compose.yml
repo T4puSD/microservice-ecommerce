@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongodb6
+    restart: on-failure
+    ports:
+      - '37017:27017'
+    environment:
+      - 'MONGO_INITDB_ROOT_USERNAME=tapusd'
+      - 'MONGO_INITDB_ROOT_PASSWORD=4321'
+    volumes:
+      - /home/tapusd/storage/docker/mongodb6:/data/db
+    
