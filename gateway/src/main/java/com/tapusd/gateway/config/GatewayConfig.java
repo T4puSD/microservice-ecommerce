@@ -36,6 +36,14 @@ public class GatewayConfig {
                                         .filter(authenticationFilter.apply(new AuthenticationFilter.Config()))
                                 )
                                 .uri("lb://ORDERSERVICE")
+                ).route("todos",
+                        r -> r.path("/todos/**")
+                                .filters(f ->
+                                        f.circuitBreaker(config ->
+                                                config.setName("todos")
+                                                .setFallbackUri("forward:/fallback/todos"))
+                                )
+                                .uri("https://dummyjson.com")
                 )
                 .build();
     }
