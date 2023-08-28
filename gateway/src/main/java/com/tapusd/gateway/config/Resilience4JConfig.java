@@ -16,7 +16,14 @@ public class Resilience4JConfig {
     @Bean
     public Customizer<ReactiveResilience4JCircuitBreakerFactory> defaultCustomizer() {
         return factory -> factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
-                .circuitBreakerConfig(CircuitBreakerConfig.ofDefaults())
+                .circuitBreakerConfig(
+                        CircuitBreakerConfig
+                                .custom()
+                                .maxWaitDurationInHalfOpenState(Duration.ofSeconds(10))
+                                .permittedNumberOfCallsInHalfOpenState(3)
+                                .waitDurationInOpenState(Duration.ofSeconds(60))
+                                .build()
+                )
                 .timeLimiterConfig(
                         TimeLimiterConfig.custom()
                                 // todos endpoint will alwasy fail because of 200ms config
