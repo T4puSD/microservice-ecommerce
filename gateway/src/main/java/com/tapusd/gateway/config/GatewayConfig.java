@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class GatewayConfig {
 
+    private static final String FALLBACK_URL = "forward:/fallback";
+
     private final AuthenticationFilter authenticationFilter;
 
     public GatewayConfig(AuthenticationFilter authenticationFilter) {
@@ -22,18 +24,21 @@ public class GatewayConfig {
                         r -> r.path("/ps/**")
                                 .filters(f -> f.rewritePath("^/ps", "")
                                         .filter(authenticationFilter.apply(new AuthenticationFilter.Config()))
+                                        .circuitBreaker(config -> config.setName("products").setFallbackUri(FALLBACK_URL))
                                 )
                                 .uri("lb://PRODUCTSERVICE") // using `lb` prefix to indicate gateway to use the eureka
                 ).route("customerService",
                         r -> r.path("/cs/**")
                                 .filters(f -> f.rewritePath("^/cs", "")
                                         .filter(authenticationFilter.apply(new AuthenticationFilter.Config()))
+                                        .circuitBreaker(config -> config.setName("customers").setFallbackUri(FALLBACK_URL))
                                 )
                                 .uri("lb://CUSTOMERSERVICE") // using registered eureka clients name to route traffic with load balancer
                 ).route("orderService",
                         r -> r.path("/os/**")
                                 .filters(f -> f.rewritePath("^/os", "")
                                         .filter(authenticationFilter.apply(new AuthenticationFilter.Config()))
+                                        .circuitBreaker(config -> config.setName("orders").setFallbackUri(FALLBACK_URL))
                                 )
                                 .uri("lb://ORDERSERVICE")
                 ).route("todos",
@@ -41,7 +46,7 @@ public class GatewayConfig {
                                 .filters(f ->
                                         f.circuitBreaker(config ->
                                                 config.setName("todos")
-                                                .setFallbackUri("forward:/fallback/todos"))
+                                                        .setFallbackUri(FALLBACK_URL))
                                 )
                                 .uri("https://dummyjson.com")
                 )

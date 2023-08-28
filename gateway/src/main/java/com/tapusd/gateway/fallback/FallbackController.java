@@ -11,8 +11,8 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/fallback")
 public class FallbackController {
 
-    @GetMapping("/todos")
-    public Mono<Response> fallbackTodoResponse() {
+    @GetMapping()
+    public Mono<Response> fallbackResponse() {
         return Mono.just(new Response()
                         .setStatus(HttpStatus.NOT_FOUND.value())
                         .setMessage("Service Not Found!")
