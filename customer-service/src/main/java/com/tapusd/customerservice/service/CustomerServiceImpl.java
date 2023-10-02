@@ -39,7 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         var customer = new Customer();
         customer.setEmail(dto.email());
-        customer.setPassword(dto.password());
+        customer.setPassword(passwordEncoder.encode(dto.password() + passwordSalt));
         customer.setPasswordSalt(passwordSalt);
         customer.setName(dto.name());
         customer.setDateOfBirth(dto.dateOfBirth());
