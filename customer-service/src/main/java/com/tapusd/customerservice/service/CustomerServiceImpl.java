@@ -1,6 +1,7 @@
 package com.tapusd.customerservice.service;
 
 import com.tapusd.customerservice.domain.Customer;
+import com.tapusd.customerservice.dto.request.CreateCustomerDTO;
 import com.tapusd.customerservice.dto.request.LoginRequest;
 import com.tapusd.customerservice.dto.response.LoginResponse;
 import com.tapusd.customerservice.exception.AuthenticationException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -27,6 +29,21 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerRepository = customerRepository;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public Customer registerNewCustomer(CreateCustomerDTO dto) {
+        String passwordSalt = UUID.randomUUID().toString()
+                .replace("-", "")
+                .substring(0, 12);
+
+        var customer = new Customer();
+        customer.setEmail(dto.email());
+        customer.setPassword(dto.password());
+        customer.setPasswordSalt(passwordSalt);
+        customer.setName(dto.name());
+        customer.setDateOfBirth(dto.dateOfBirth());
+        return customerRepository.save(customer);
     }
 
     @Override
@@ -58,7 +75,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerRepository.findByEmail(request.email())
                 .orElseThrow(() -> new AuthenticationException("Email not found!"));
 
-        if (!passwordEncoder.matches(request.password(), customer.getPassword())) {
+        if (!isValidPassword(customer, request.password())) {
             throw new AuthenticationException("Invalid credentials!");
         }
 
@@ -82,5 +99,12 @@ public class CustomerServiceImpl implements CustomerService {
         } catch (Exception ex) {
             return false;
         }
+    }
+
+    @Override
+    public boolean isValidPassword(Customer customer, String toCheckPassword) {
+        return passwordEncoder.matches(
+                toCheckPassword + customer.getPasswordSalt(),
+                customer.getPassword());
     }
 }

@@ -1,6 +1,7 @@
 package com.tapusd.customerservice.service;
 
 import com.tapusd.customerservice.domain.Customer;
+import com.tapusd.customerservice.dto.request.CreateCustomerDTO;
 import com.tapusd.customerservice.dto.request.LoginRequest;
 import com.tapusd.customerservice.dto.response.LoginResponse;
 import io.jsonwebtoken.Claims;
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CustomerService {
+
+    Customer registerNewCustomer(CreateCustomerDTO dto);
 
     Customer save(Customer customer);
 
@@ -24,4 +27,6 @@ public interface CustomerService {
     Jws<Claims> verifyLogin(String jwtToken);
 
     boolean isValidToken(String jwtToken);
+
+    boolean isValidPassword(Customer customer, String toCheckPassword);
 }

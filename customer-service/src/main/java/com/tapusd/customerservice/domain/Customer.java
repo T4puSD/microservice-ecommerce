@@ -1,5 +1,6 @@
 package com.tapusd.customerservice.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +26,10 @@ public class Customer {
 
     @NotBlank
     private String password;
+
+    @NotBlank
+    @Column(name = "password_salt", nullable = false)
+    private String passwordSalt;
 
     private LocalDate dateOfBirth;
 
@@ -58,6 +63,15 @@ public class Customer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPasswordSalt() {
+        return passwordSalt;
+    }
+
+    public Customer setPasswordSalt(String passwordSalt) {
+        this.passwordSalt = passwordSalt;
+        return this;
     }
 
     public LocalDate getDateOfBirth() {

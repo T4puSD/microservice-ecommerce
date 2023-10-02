@@ -39,14 +39,7 @@ public class AuthController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerDTO saveCustomer(@RequestBody CreateCustomerDTO dto) {
-
-        var customer = new Customer();
-        customer.setEmail(dto.email());
-        customer.setPassword(dto.password());
-        customer.setName(dto.name());
-        customer.setDateOfBirth(dto.dateOfBirth());
-
-        Customer savedCustomer = customerService.save(customer);
+        Customer savedCustomer = customerService.registerNewCustomer(dto);
         return CustomerAdapter.convertToDTO(savedCustomer);
     }
 
